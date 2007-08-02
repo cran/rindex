@@ -1,0 +1,172 @@
+subject: indexing and regression testing
+
+Dear all,
+
+it was a pleasure to meet you at Iowa State University. I just submitted two experimental packages to CRAN:
+
+rindex: quick indexing of large objects (currently only character, see ?index)
+regtest: some first support for automated regression testing (heavily used in \dontshow{} section of ?index)
+
+With rindex you can for example
+
+i <- index(rownames(someDataFrame))
+# then this 
+someDataFrame[match(fewRowNames, i),]
+# is much faster than that
+someDataFrame[match(fewRowNames, rownames(someDataFrame)),]
+# which still is much faster than
+someDataFrame[fewRowNames, ]
+# the latter being surprisingly slow as it can be worked around by match (even without indexing)
+
+I'd appreciate any comments, especially on the "Open Questions" secion in ?index, in order to
+1) extend to all atomic types
+2) extend to packages R.huge and/or ff
+3) optimally integrate with sort(OK), order(no generic yet) and match(no generic and dispatch rather needed on second argument)
+
+Both packages were developed under 2.5.1 and I plan to publish them under a GPL2-QA, a GPL2 clone that obliges users to participate in some kind of regression testing (to be defined).
+
+Best regards
+
+
+Jens Oehlschlägel
+
+
+
+P.S. 
+
+> # some timings using timefactor(regtest)
+> library(rindex)
+> 
+> Vec1 <- c(NA, paste('a', 1:1000000, sep=""))
+> Vec2 <- c(paste('a', 1:1000000, sep=""), NA)
+> iVec1 <- index(Vec1, verbose=TRUE)
+     user.self sys.self elapsed
+sort      7.85     0.01    7.86
+tree      0.00     0.00    0.00
+> iVec2 <- index(Vec2, verbose=TRUE)
+finalized tree
+     user.self sys.self elapsed
+sort      7.78        0    7.79
+tree      0.00        0    0.00
+> 
+> timefactor(any(Vec1=="a999"), any(iVec1=="a999"), 10, 100)
+finalized tree
+            nom  denom   factor
+user.self 0.041 0.0036 11.38889
+sys.self  0.000 0.0000      NaN
+elapsed   0.041 0.0036 11.38889
+> timefactor(any(Vec2=="a999"), any(iVec2=="a999"), 10, 100)
+            nom  denom   factor
+user.self 0.040 0.0036 11.11111
+sys.self  0.000 0.0000      NaN
+elapsed   0.041 0.0036 11.38889
+> 
+> timefactor(length(match("a999", Vec1)), length(match("a999", iVec1)), 10, 1000)
+            nom   denom   factor
+user.self 0.125 0.00017 735.2941
+sys.self  0.000 0.00000      NaN
+elapsed   0.125 0.00018 694.4444
+> timefactor(length(match("a999", Vec2)), length(match("a999", iVec2)), 10, 1000)
+            nom   denom   factor
+user.self 0.123 0.00015 820.0000
+sys.self  0.003 0.00000      Inf
+elapsed   0.127 0.00015 846.6667
+> 
+> timefactor(length(match(c("a9","a99","a999","a9999"), Vec1)), length(match(c("a9","a99","a999","a9999"), iVec1)), 10, 1000)
+            nom   denom   factor
+user.self 0.126 0.00022 572.7273
+sys.self  0.000 0.00000      NaN
+elapsed   0.127 0.00022 577.2727
+> timefactor(length(match(c("a9","a99","a999","a9999"), Vec2)), length(match(c("a9","a99","a999","a9999"), iVec2)), 10, 1000)
+            nom   denom   factor
+user.self 0.125 0.00022 568.1818
+sys.self  0.002 0.00000      Inf
+elapsed   0.126 0.00022 572.7273
+> 
+> # and not too bad with respect to the recent hasNA() / anyNA() thread (once the index has been built)
+> timefactor(any(is.na(Vec1)), any(is.na(iVec1)), 50, 50)
+             nom denom   factor
+user.self 0.0040 0.003 1.333333
+sys.self  0.0004 0.000      Inf
+elapsed   0.0044 0.003 1.466667
+> timefactor(any(is.na(Vec2)), any(is.na(iVec2)), 50, 50)
+             nom  denom   factor
+user.self 0.0040 0.0036 1.111111
+sys.self  0.0008 0.0000      Inf
+elapsed   0.0046 0.0034 1.352941
+> 
+> # especially if using a better function for this
+> timefactor(any(is.na(Vec1)), length(match(NA, iVec1)), 50, 1000)
+             nom   denom   factor
+user.self 0.0044 0.00013 33.84615
+sys.self  0.0002 0.00000      Inf
+elapsed   0.0046 0.00013 35.38462
+> timefactor(any(is.na(Vec2)), length(match(NA, iVec2)), 50, 1000)
+             nom   denom   factor
+user.self 0.0044 0.00014 31.42857
+sys.self  0.0000 0.00000      NaN
+elapsed   0.0042 0.00014 30.00000
+> 
+> # or ask directly :-)
+> timefactor(any(is.na(Vec1)), iVec1$nNA, 50, 10000)
+             nom denom   factor
+user.self 0.0044 9e-06 488.8889
+sys.self  0.0000 0e+00      NaN
+elapsed   0.0044 9e-06 488.8889
+> timefactor(any(is.na(Vec2)), iVec2$nNA, 50, 10000)
+             nom denom   factor
+user.self 0.0046 1e-05 460.0000
+sys.self  0.0000 0e+00      NaN
+elapsed   0.0046 9e-06 511.1111
+> 
+> version
+               _                           
+platform       i386-pc-mingw32             
+arch           i386                        
+os             mingw32                     
+system         i386, mingw32               
+status                                     
+major          2                           
+minor          5.1                         
+year           2007                        
+month          06                          
+day            27                          
+svn rev        42083                       
+language       R                           
+version.string R version 2.5.1 (2007-06-27)
+
+
+
+
+
+
+# some timings using timefactor(regtest)
+library(rindex)
+
+Vec1 <- c(NA, paste('a', 1:1000000, sep=""))
+Vec2 <- c(paste('a', 1:1000000, sep=""), NA)
+iVec1 <- index(Vec1, verbose=TRUE)
+iVec2 <- index(Vec2, verbose=TRUE)
+
+timefactor(any(Vec1=="a999"), any(iVec1=="a999"), 10, 100)
+timefactor(any(Vec2=="a999"), any(iVec2=="a999"), 10, 100)
+
+timefactor(length(match("a999", Vec1)), length(match("a999", iVec1)), 10, 1000)
+timefactor(length(match("a999", Vec2)), length(match("a999", iVec2)), 10, 1000)
+
+timefactor(length(match(c("a9","a99","a999","a9999"), Vec1)), length(match(c("a9","a99","a999","a9999"), iVec1)), 10, 1000)
+timefactor(length(match(c("a9","a99","a999","a9999"), Vec2)), length(match(c("a9","a99","a999","a9999"), iVec2)), 10, 1000)
+
+# and not too bad with respect to the recent hasNA() / anyNA() thread (once the index has been built)
+timefactor(any(is.na(Vec1)), any(is.na(iVec1)), 50, 50)
+timefactor(any(is.na(Vec2)), any(is.na(iVec2)), 50, 50)
+
+# especially if using a better function for this
+timefactor(any(is.na(Vec1)), length(match(NA, iVec1)), 50, 1000)
+timefactor(any(is.na(Vec2)), length(match(NA, iVec2)), 50, 1000)
+
+# or ask directly :-)
+timefactor(any(is.na(Vec1)), iVec1$nNA, 50, 10000)
+timefactor(any(is.na(Vec2)), iVec2$nNA, 50, 10000)
+
+version
