@@ -59,7 +59,7 @@ static int rindex_strncmp(SEXP x, SEXP y, int n)
     return strncmp(translateChar(x), translateChar(y), n);
 }
 */
-static int rindex_strlike(SEXP x, char *y, int n)
+static int rindex_strlike(SEXP x, const char *y, int n)
 {
     return strncmp(translateChar(x), y, n);
 }
@@ -98,7 +98,7 @@ typedef struct treeleaf {
 /* --------------------------------------------------------------------------------------------
  { helper functions for getting and setting list elements by name */
 
-SEXP getListElement(SEXP list, char *str)
+SEXP getListElement(SEXP list, const char *str)
 {
   SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
   int i;
@@ -109,7 +109,7 @@ SEXP getListElement(SEXP list, char *str)
     }
   return elmt;
 }
-void setListElement(SEXP list, char *str, SEXP elmt)
+void setListElement(SEXP list, const char *str, SEXP elmt)
 {
   SEXP names = getAttrib(list, R_NamesSymbol);
   int i;
@@ -123,6 +123,7 @@ void setListElement(SEXP list, char *str, SEXP elmt)
 
 /* helper functions for getting and setting list elements by name }
    -------------------------------------------------------------------------------- */
+
 
 
 /* --------------------------------------------------------------------------------------------
@@ -538,7 +539,7 @@ SEXP rindex_indexFind(SEXP obj, SEXP val_, SEXP findlow_){
 
 
 /* must only be called for Treenode, not for Treeleaf */
-int rindex_recIsLikeHigh(Rboolean isleaf, void *pnode, char *val, int nval, SEXP v){
+int rindex_recIsLikeHigh(Rboolean isleaf, void *pnode, const char *val, int nval, SEXP v){
   int ret=0;
   if (isleaf){
     Treeleaf *lnode=pnode;
@@ -551,7 +552,7 @@ int rindex_recIsLikeHigh(Rboolean isleaf, void *pnode, char *val, int nval, SEXP
 }
 
 /* must only be called for Treenode, not for Treeleaf */
-void rindex_recIndexFindlike(Rboolean isleaf, void *pnode, char *val, int nval, SEXP v, int findlow, int *pstatus, int *pfound){
+void rindex_recIndexFindlike(Rboolean isleaf, void *pnode, const char *val, int nval, SEXP v, int findlow, int *pstatus, int *pfound){
   int i=0;
   int vi2val=0;
   if (isleaf){

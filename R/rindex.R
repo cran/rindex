@@ -244,7 +244,7 @@ sort.rindex <- function(x, decreasing = FALSE, na.last = NA, ...){
       ret <- x$val[as.integer(1):(x$n-x$nNA)]
     }
   }else{
-    ret <-.x$val[0]
+    ret <- x$val[0]
   }
   if (is.na(na.last) || !x$nNA){
     return(ret)

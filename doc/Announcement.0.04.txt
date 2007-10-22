@@ -2,7 +2,7 @@ subject: indexing and regression testing
 
 Dear all,
 
-it was a pleasure to meet you at Iowa State University. I just submitted two experimental packages to CRAN:
+It was a pleasure to meet you at Iowa State University. Two days ago I submitted two experimental packages to CRAN (hope it  will be there soon):
 
 rindex: quick indexing of large objects (currently only character, see ?index)
 regtest: some first support for automated regression testing (heavily used in \dontshow{} section of ?index)
@@ -19,7 +19,7 @@ someDataFrame[fewRowNames, ]
 # the latter being surprisingly slow as it can be worked around by match (even without indexing)
 
 I'd appreciate any comments, especially on the "Open Questions" secion in ?index, in order to
-1) extend to all atomic types
+1) extend to all atomic types and be UTF8-safe
 2) extend to packages R.huge and/or ff
 3) optimally integrate with sort(OK), order(no generic yet) and match(no generic and dispatch rather needed on second argument)
 

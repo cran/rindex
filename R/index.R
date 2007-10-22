@@ -17,7 +17,7 @@
 #! }
 #! \usage{
 #!  index(x, uni = NULL, batch = NULL, verbose = FALSE)
-#!  c.index(...)
+#!  \method{c}{index}(\dots)
 #!  indexAddTree(obj, batch = NULL)
 #!  indexDelTree(obj)
 #!  indexAutobatch(n, batch = 64)
@@ -78,7 +78,6 @@
 #!    \code{\link{match}} \tab redefined version of \code{\link[base]{match}} automatically recognizing index tables \cr
 #!    \code{\link{\%in\%}} \tab redefined version of \code{\link[base:match]{\%in\%}} (redefinition needed for finding redefined \code{\link{match}} in spite of namespaces)  \cr
 #!    }
-#!   }
 #! }
 #! \value{
 #!   An object of class \sQuote{index}, i.e. a list with components
@@ -249,7 +248,8 @@
 #!   c("b","c","z",NA) \%in\% x
 #!   c("b","c","z",NA) \%in\% i
 #!
-#! \dontshow{ #!
+#! \dontshow{
+#!
 #!   cat("\n")
 #!   cat("creating an rindex from atomic vector\n")
 #!   ri <- rindex(x)
@@ -849,7 +849,7 @@ sort.index <- function(x, decreasing = FALSE, na.last = NA, ...){
       ret <- x$val[as.integer(1):(x$n-x$nNA)]
     }
   }else{
-    ret <-.x$val[0]
+    ret <- x$val[0]
   }
   if (is.na(na.last) || !x$nNA){
     return(ret)
