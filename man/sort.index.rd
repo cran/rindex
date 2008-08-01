@@ -30,7 +30,7 @@
   \tabular{rl}{
    \code{\link{sort.index}} \tab identical to \code{\link[base]{sort}} of original vector, but much faster \cr
    \code{\link{order.index}} \tab identical to \code{\link[base]{order}} of original vector, but much faster \cr
-   \code{\link{[.index}} \tab \code{index[]} returns original vector, subsetting works identical to susetting original vector \code{\link[base]{[}} (via \code{\link[base]{Next.Method}}) \cr
+   \code{\link{[.index}} \tab \code{index[]} returns original vector, subsetting works identical to susetting original vector \code{\link[base]{[}} (via \code{\link[base]{NextMethod}}) \cr
    \code{\link{[<-.index}} \tab currently forbidden \cr
    \code{\link{is.na.index}} \tab identical to \code{\link[base]{is.na}} of original vector, but much faster \cr
   }
