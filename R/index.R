@@ -617,7 +617,7 @@ index <- function(x, uni=NULL, batch=NULL, verbose=FALSE){
     # xx instead of duplicated tune by special C function scanning the already sorted x
     if (is.null(uni))
       uni <- !any(duplicated(x))
-  })
+  }, gcFirst=FALSE)
   if (is.null(batch))
     batch <- indexAutobatch(n-nNA)
   obj <- list(
@@ -632,7 +632,7 @@ index <- function(x, uni=NULL, batch=NULL, verbose=FALSE){
   class(obj) <- "index"
   treetime <- system.time(
     obj <- indexAddTree(obj)
-  )
+  , gcFirst=FALSE)
   if (verbose)
     print(rbind(sort=sorttime, tree=treetime)[,1:3])
   obj

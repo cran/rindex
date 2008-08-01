@@ -211,7 +211,7 @@ void *rindex_recuni(int *pnNodes, int *plowhightype, int batch, int low, int hig
     mid = (high+low)/2;
     //Rprintf("rindex_recuni creates node: low=%d  mid=%d  high=%d\n", low, mid, high);
     Treenode *pnode;
-    pnode = Calloc(sizeof(Treenode), Treenode);
+    pnode = Calloc(1, Treenode);
     pnode->mid  = mid;
     pnode->low  = rindex_recuni(pnNodes, &lowtype, batch, low, mid);
     pnode->high = rindex_recuni(pnNodes, &hightype, batch, mid+1, high);
@@ -222,7 +222,7 @@ void *rindex_recuni(int *pnNodes, int *plowhightype, int batch, int low, int hig
   }else{
     //Rprintf("rindex_recuni creates leaf: low=%d  high=%d\n", low, high);
     Treeleaf *pleaf;
-    pleaf = Calloc(sizeof(Treeleaf), Treeleaf);
+    pleaf = Calloc(1, Treeleaf);
     pleaf->low  = low;
     pleaf->high = high;
     (*pnNodes)++;
@@ -274,7 +274,7 @@ void *rindex_rectie(int *pnNodes, int *plowhightype, int batch, int low, int hig
 
     if (takewhich>0){
       Treenode *pnode;
-      pnode = Calloc(sizeof(Treenode), Treenode);
+      pnode = Calloc(1, Treenode);
       if (midhigh==mid+1){  /* the default if no ties are present */
         //Rprintf("rindex_rectie creates node (takewhich>0 no ties): low=%d  mid=%d  high=%d\n", low, mid, high);
         pnode->mid  = mid;
@@ -292,7 +292,7 @@ void *rindex_rectie(int *pnNodes, int *plowhightype, int batch, int low, int hig
       return(pnode);
     }else if (takewhich<0){
       Treenode *pnode;
-      pnode = Calloc(sizeof(Treenode), Treenode);
+      pnode = Calloc(1, Treenode);
       //Rprintf("rindex_rectie creates node (takewhich<0 ): low=%d  mid=%d  high=%d\n", low, midlow, high);
       pnode->mid  = midlow;
       pnode->low  = rindex_rectie(pnNodes, &lowtype, batch, low     , midlow, rindex_indexAutobatch(midlow-low+1, batch), val);  /* taking original batch here assures that batch does not recursively shrink */
@@ -307,7 +307,7 @@ void *rindex_rectie(int *pnNodes, int *plowhightype, int batch, int low, int hig
   /* if (low-high+1)<=flexbatch OR all values equal (takewhich==0) */
   //Rprintf("rindex_rectie creates leaf: low=%d  high=%d\n", low, high);
   Treeleaf *pleaf;
-  pleaf = Calloc(sizeof(Treeleaf), Treeleaf);
+  pleaf = Calloc(1, Treeleaf);
   pleaf->low  = low;
   pleaf->high = high;
   (*plowhightype)=1;
@@ -326,7 +326,7 @@ SEXP rindex_indexAddTree(SEXP obj){
     int uni   = asLogical(getListElement(obj, "uni"));
     SEXP extPtr;
     Treeroot *tree;
-    tree = Calloc(sizeof(Treeroot), Treeroot);
+    tree = Calloc(1, Treeroot);
 
     int dummylowhightype=0; /* not stored in topnode since tree->nNodes>1 is sufficient */
     tree->nNodes=0;

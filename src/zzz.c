@@ -53,7 +53,7 @@ SEXP demo_rindex_open(
   SEXP Sn
 ){
   int i,n = INTEGER(Sn)[0];
-  pINT ptr = Calloc(sizeof(INT)*n, INT);
+  pINT ptr = Calloc(n, INT);
   SEXP extPtr, ret;
   for (i=0;i<n;i++){
     ptr[i] = i;
