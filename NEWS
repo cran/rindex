@@ -1,0 +1,17 @@
+		CHANGES IN rindex VERSION 0.11
+
+USER VISIBLE CHANGES
+
+    o	We no longer patch 'match', instead we have 'match.index' and 'match.rindex' 
+	that need to be called directly (wish of CRAN maintainer). 
+	Without the patch we cannot S3 method dispatch because the crucial argument 
+	in match is 'table', not 'x'. 
+
+    o	We no longer provide %in%.
+
+
+
+BUG FIXES
+
+    o	prebuild.sh no longer tries to execute a non-existing path
+

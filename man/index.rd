@@ -72,9 +72,9 @@
    \code{\link{>.index}} \tab index GreaterThan value \cr
    \code{\link{<=.index}} \tab index LowerEqual value \cr
    \code{\link{>=.index}} \tab index GreaterEqual value \cr
-   \strong{match and \%in\%} \tab \emph{high level matching and \%in\% behave as expected} \cr
-   \code{\link{match}} \tab redefined version of \code{\link[base]{match}} automatically recognizing index tables \cr
-   \code{\link{\%in\%}} \tab redefined version of \code{\link[base:match]{\%in\%}} (redefinition needed for finding redefined \code{\link{match}} in spite of namespaces)  \cr
+   \strong{match} \tab \emph{high level matching } \cr
+   \code{\link{match.index}} \tab use this to match in an index instead of  \code{\link[base]{match}} \cr
+   \code{\link{match.rindex}} \tab use this to match in an rindex instead of  \code{\link[base]{match}} \cr
    }
 }
 \value{
@@ -133,7 +133,6 @@
   \itemize{
    \item Will R core officially export C entry points to UTF-8 resistant strcmp (STRCOLL) and strncmp (nothing yet)?
    \item Shall we make order() generic to allow dispatch of order.index like we have already dispatch of sort.index?
-   \item Shall we - in R base - modify match and \%in\% to avoid masking them by rindex?
    \item Can we call the evaluator from C in order to make <>=comparisons independent of atomic mode (UTF-8 etc.) or will this kill to much performance?
    \item Can we call the evaluator from C for [-accessing the vector elements in order to generalize the index to ff or R.huge or will this kill to much performance?
   }
@@ -240,11 +239,9 @@
   i>"d3"
   i>="d3"
 
-  cat("HIGH LEVEL match AND \%in\% behave as expected\n")
+  cat("HIGH LEVEL match.index and  behave as expected\n")
   match(c("b","c","z",NA), x)
-  match(c("b","c","z",NA), i)
-  c("b","c","z",NA) \%in\% x
-  c("b","c","z",NA) \%in\% i
+  match.index(c("b","c","z",NA), i)
 
 \dontshow{
 
@@ -334,10 +331,7 @@
 
   cat("HIGH LEVEL match AND  behave as expected\n")
   match(c("b","c","z",NA), x)
-  match(c("b","c","z",NA), ri)
-  c("b","c","z",NA) \%in\% x
-  c("b","c","z",NA) \%in\% ri
-
+  match.rindex(c("b","c","z",NA), ri)
 }
 
 \dontrun{
@@ -585,11 +579,8 @@
   stopifnot(identical(ri>"c",x>"c"))
   stopifnot(identical(ri>="c",x>="c"))
 
-  stopifnot(identical(match(c("b","c","z",NA), i), match(c("b","c","z",NA), x)))
-  stopifnot(identical(match(c("b","c","z",NA), ri), match(c("b","c","z",NA), x)))
-
-  stopifnot(identical(c("b","c","z",NA) \%in\% i, c("b","c","z",NA) \%in\% x))
-  stopifnot(identical(c("b","c","z",NA) \%in\% ri, c("b","c","z",NA) \%in\% x))
+  stopifnot(identical(match.index(c("b","c","z",NA), i), match(c("b","c","z",NA), x)))
+  stopifnot(identical(match.rindex(c("b","c","z",NA), ri), match(c("b","c","z",NA), x)))
 
   stopifnot(success)
 
