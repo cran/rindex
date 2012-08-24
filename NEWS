@@ -1,3 +1,11 @@
+		CHANGES IN rindex VERSION 0.12
+
+BUG FIXES
+
+    o	replaced .First.lib, .Last.lib by .onLoad, .onUnload
+
+
+
 		CHANGES IN rindex VERSION 0.11
 
 USER VISIBLE CHANGES

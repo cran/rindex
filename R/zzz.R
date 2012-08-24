@@ -1,8 +1,9 @@
-.First.lib <- function(lib, pkg) {
+.onLoad <- function(lib, pkg) {
        warning("package rindex is under development and still may change considerably")
        library.dynam("rindex", pkg, lib)
 }
-.Last.lib <- function(libpath) {
+
+.onUnload <- function(libpath){
        library.dynam.unload("rindex", libpath)
 }
 
