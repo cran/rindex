@@ -1,7 +1,7 @@
 Package: rindex
 Type: Package
 Title: Indexing for R
-Version: 0.12
+Version: 0.12.1
 Date: 2012-08-24
 Author: Jens Oehlschlägel <Jens.Oehlschlaegel@truecluster.com>
 Maintainer: Jens Oehlschlägel <Jens.Oehlschlaegel@truecluster.com>
@@ -12,8 +12,8 @@ Description: Index structures allow quickly accessing elements from
         is quite optimal for R.
 License: file LICENSE
 Encoding: latin1
-Packaged: 2012-08-24 17:36:40 UTC; root
+Packaged: 2018-08-31 16:20:30 UTC; hornik
 Repository: CRAN
-Date/Publication: 2012-08-24 21:25:46
+Date/Publication: 2018-08-31 17:40:10 UTC
 NeedsCompilation: yes
 License_restricts_use: yes

@@ -1,5 +1,5 @@
 .onLoad <- function(lib, pkg) {
-       warning("package rindex is under development and still may change considerably")
+       packageStartupMessage("package rindex is under development and still may change considerably")
        library.dynam("rindex", pkg, lib)
 }
 
